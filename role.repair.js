@@ -1,4 +1,4 @@
-var roleControlLvl = require('role.controlLvl');
+var roleBuilder = require('role.builder');
 
 module.exports =
 {
@@ -16,7 +16,18 @@ module.exports =
         }
 
         if (creep.memory.energizing == true) {
-            var needRepair = creep.pos.findClosest.
+            var needRepair = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (nR) => nR.hits < nR.hitsMax && nR.structureType != STRUCTURE_WALL});
+        if(needRepair != undefined)
+        {
+            if(creep.repair(needRepair) == ERR_NOT_IN_RANGE)
+            {
+                creep.moveTo(needRepair);
+            }
+        }
+        else
+        {
+            roleBuilder.run(creep);
+        }
 
         }
 
